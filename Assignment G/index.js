@@ -1,6 +1,11 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+import getBook from './modules/book modules/getBook'
+import deleteBook from './modules/book modules/deleteBook'
+import loanOutBook from './modules/book modules/getBook'
+import returnBook from './modules/book modules/returnBook'
+import updateBook from './modules/book modules/updateBook'
 
 
 host = 'localhost';

@@ -1,3 +1,6 @@
-export default function updateBook(req, res) {
+function updateBook(req, res) {
     console.log('updateBook')
+    res.end()
 }
+
+module.exports = updateBook;

@@ -1,3 +1,6 @@
-export default function loanOutBook(req, res) {
+function loanOutBook(req, res) {
     console.log('loanOutBook')
+    res.end();
 }
+
+module.exports = loanOutBook;

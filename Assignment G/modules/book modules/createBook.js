@@ -1,3 +1,6 @@
-export default function getBook(req, res) {
-    console.log('getBook')
+function createBook(req, res) {
+    console.log('createBook');
+    res.end();
 }
+
+module.exports = createBook;

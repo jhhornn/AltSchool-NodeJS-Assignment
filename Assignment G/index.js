@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 
-const modulePath = path.join(__dirname, '/modules/book modules/')
+const modulePath = path.join(__dirname, '/routes/book routes/')
 const createBook = require(`${modulePath}createBook`);
 const deleteBook = require(`${modulePath}deleteBook`);
 const loanOutBook = require(`${modulePath}loanOutBook`);

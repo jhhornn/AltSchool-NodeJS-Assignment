@@ -48,6 +48,7 @@ function addId(book) {
 			    }
 		    }
 	    }
+        return book;
     }
 	return;
 }

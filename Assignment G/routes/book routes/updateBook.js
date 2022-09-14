@@ -1,5 +1,5 @@
 const fs  = require('fs');
-const {requestBookAndParse, accessDatabase} = require('./../../utilities.js');
+const {requestBookAndParse, accessDatabase, checkIndex} = require('./../../utilities.js');
 
 
 const bookLibrary = accessDatabase('books.json');

@@ -1,10 +1,9 @@
 const fs  = require('fs');
-const path = require('path');
 const {requestBookAndParse, accessDatabase} = require('./../../utilities.js');
 
 
 const bookLibrary = accessDatabase('books.json');
-console.log(bookLibrary);
+
 
 
 function createBook(req, res) {
@@ -17,6 +16,7 @@ function createBook(req, res) {
                     res.writeHead(400)
                     res.end("An error occurred while reading");
                 }
+                console.log(data);
             })
         })
         .catch((err) => {

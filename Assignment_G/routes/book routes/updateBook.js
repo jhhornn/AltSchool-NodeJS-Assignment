@@ -1,15 +1,14 @@
 const fs  = require('fs');
-const {requestBookAndParse, accessDatabase, addId} = require('./../../utilities.js');
+const {requestBookAndParse, accessDatabase} = require('./../../utilities.js');
 
 
 const bookLibrary = accessDatabase('books.json');
 
-
-
-function createBook(req, res) {
-    const books = requestBookAndParse(req, res);
+function updateBook(req, res) {
+    const books = requestAndParse(req, res);
     books
         .then((book) => {
+            const bookId = book.id;
             fs.readFile(bookLibrary, 'utf8', (err, data) => {
                 if (err) {
                     console.log(err);
@@ -17,15 +16,18 @@ function createBook(req, res) {
                     res.end("An error occurred while reading");
                 }
                 const availableBooks = JSON.parse(data);
-                const newBook = {
-                    title: book.title,
-                    author: book.author,
-                    year: Number(book.year),
-                }
-                availableBooks.push(newBook);
-                idedBooks = addId(availableBooks);
+                
+                const bookIndex = availableBooks.findIndex(book => book.id === bookId);
 
-                fs.writeFile(bookLibrary, JSON.stringify(idedBooks), (err) => {
+                if (bookIndex === -1) {
+                    res.writeHead(404);
+                    res.end("Book with the specifed id not found");
+                    return;
+                }
+                const updatedBook = {...availableBooks[bookIndex], ...book}
+                availableBooks[bookIndex] = updatedBook;
+
+                fs.writeFile(bookLibrary, JSON.stringify(availableBooks), (err) => {
                     if (err) {
                         console.log(err);
                         res.writeHead(500);
@@ -33,7 +35,8 @@ function createBook(req, res) {
                             message: 'Let me check myself.'
                         }));
                     }
-                    res.end(JSON.stringify(idedBooks))
+                    res.writeHead(200);
+                    res.end(JSON.stringify({message: 'update successfull'}));
                 })
                 
             })
@@ -43,5 +46,4 @@ function createBook(req, res) {
         });
 }
 
-
-module.exports = createBook;
+module.exports = updateBook;

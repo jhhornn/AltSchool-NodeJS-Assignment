@@ -1,11 +1,11 @@
 const fs  = require('fs');
-const {requestBookAndParse, accessDatabase} = require('./../../utilities.js');
+const {requestAndParse, accessDatabase} = require('./../../utilities.js');
 
 
 const bookLibrary = accessDatabase('books.json');
 
 function deleteBook(req, res) {
-    const books = requestBookAndParse(req, res);
+    const books = requestAndParse(req, res);
     books
         .then((book) => {
             const bookId = book.id;

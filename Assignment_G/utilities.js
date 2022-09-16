@@ -1,6 +1,7 @@
+const fs  = require('fs');
 const path = require('path');
 
-function requestBookAndParse(req, res) {
+function requestAndParse(req, res) {
     return new Promise((resolve, reject) => {
         const body = [];
 
@@ -20,10 +21,37 @@ function requestBookAndParse(req, res) {
     })
 }
 
+function authenticate(req, res) {
+    return new Promise((resolve, reject) => {
+        const loginDetails = requestAndParse(req, res); 
+            loginDetails
+                .then( async (user) => {
+                    const users = await getAllUsers()
+                    console.log(users);
+                })
+    })
+}
+
+
+function getAllUsers() {
+    const usersDb = accessDatabase('users.json');
+    console.log(usersDb);
+    return new Promise((resolve, reject) => {
+        fs.readFile(usersDb, 'utf8', (err, users) => {
+            if(err){
+                reject(err);
+            }
+
+            resolve(JSON.parse(users));
+        })
+    })
+}
+console.log(getAllUsers())
+
 
 function accessDatabase(datafile) {
     let directory = __dirname.split(path.sep);
-    databaseDirectory = directory.slice(0, directory.indexOf('Assignment G')+1);
+    databaseDirectory = directory.slice(0, directory.indexOf('Assignment_G')+1);
     databaseDirectory.push('database');
     databaseDirectory = databaseDirectory.join(`${path.sep}`);
     const bookLibrary = path.join(databaseDirectory, datafile);
@@ -55,7 +83,8 @@ function addId(book) {
 
 
 module.exports = {
-    requestBookAndParse,
+    requestAndParse,
     accessDatabase,
-    addId
+    addId, 
+    authenticate
 }

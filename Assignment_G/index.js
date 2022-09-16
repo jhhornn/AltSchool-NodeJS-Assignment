@@ -1,6 +1,7 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const {authenticate} = require('./utilities.js')
 
 
 const modulePath = path.join(__dirname, '/routes/book routes/')
@@ -9,11 +10,7 @@ const deleteBook = require(`${modulePath}deleteBook`);
 const loanOutBook = require(`${modulePath}loanOutBook`);
 const returnBook = require(`${modulePath}returnBook`);
 const updateBook = require(`${modulePath}updateBook`);
-// import createBook from './modules/book modules/createBook.js';
-// import deleteBook from './modules/book modules/deleteBook.js';
-// import loanOutBook from'./modules/book modules/loanOutBook.js';
-// import returnBook from './modules/book modules/returnBook.js';
-// import updateBook from './modules/book modules/updateBook.js';
+
 
 
 host = 'localhost';
@@ -26,8 +23,13 @@ function requestHandler(req, res){
     let req_method = req.method.toLowerCase();
 
     if (req_url === '/books/create' && req_method === 'post'){
-        createBook(req,res)
-        res.end()
+        authenticate(req, res)
+            .then(() => {
+                createBook(req, res);
+            }).catch((err) => {
+                res.writeHead(400);
+                res.end(JSON.stringify({message: err}));
+            }); 
     }
     else if (req_url === '/books/delete' && req_method === 'delete'){
         deleteBook(req,res)

@@ -24,12 +24,13 @@ function requestHandler(req, res){
 
     if (req_url === '/books/create' && req_method === 'post'){
         authenticate(req, res)
-            .then(() => {
+            .then((() => {
                 createBook(req, res);
-            }).catch((err) => {
+            })()).catch((err) => {
+                console.log(err);
                 res.writeHead(400);
                 res.end(JSON.stringify({message: err}));
-            }); 
+            });  
     }
     else if (req_url === '/books/delete' && req_method === 'delete'){
         deleteBook(req,res)

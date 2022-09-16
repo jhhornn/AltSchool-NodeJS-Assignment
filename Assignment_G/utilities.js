@@ -1,6 +1,7 @@
 const fs  = require('fs');
 const path = require('path');
 
+
 function requestAndParse(req, res) {
     return new Promise((resolve, reject) => {
         const body = [];
@@ -21,21 +22,19 @@ function requestAndParse(req, res) {
     })
 }
 
-function authenticate(req, res) {
-    return new Promise((resolve, reject) => {
-        const loginDetails = requestAndParse(req, res); 
-            loginDetails
-                .then( async (user) => {
-                    const users = await getAllUsers()
-                    console.log(users);
-                })
-    })
+
+function accessDatabase(datafile) {
+    let directory = __dirname.split(path.sep);
+    databaseDirectory = directory.slice(0, directory.indexOf('Assignment_G')+1);
+    databaseDirectory.push('database');
+    databaseDirectory = databaseDirectory.join(`${path.sep}`);
+    const bookLibrary = path.join(databaseDirectory, datafile);
+    return bookLibrary;
 }
 
 
 function getAllUsers() {
     const usersDb = accessDatabase('users.json');
-    console.log(usersDb);
     return new Promise((resolve, reject) => {
         fs.readFile(usersDb, 'utf8', (err, users) => {
             if(err){
@@ -46,16 +45,29 @@ function getAllUsers() {
         })
     })
 }
-console.log(getAllUsers())
 
 
-function accessDatabase(datafile) {
-    let directory = __dirname.split(path.sep);
-    databaseDirectory = directory.slice(0, directory.indexOf('Assignment_G')+1);
-    databaseDirectory.push('database');
-    databaseDirectory = databaseDirectory.join(`${path.sep}`);
-    const bookLibrary = path.join(databaseDirectory, datafile);
-    return bookLibrary;
+function authenticate(req, res) {
+    return new Promise((resolve, reject) => {
+        const loginDetails = requestAndParse(req, res);
+            loginDetails
+                .then( async (loginDeet) => {
+                    const users = await getAllUsers();
+                    const userFound = users.find((user) => {
+                        return user.username === loginDeet[0].username;
+                    }) //The loginDeet slice is so as to pick the first object of the array passed for authentication.
+
+                    if (!userFound) {
+                        reject('User not found: Pls sign up');
+                        return
+                    }
+
+                    if (userFound.password !== loginDeet[0].password) {
+                        reject('Invalid username or password');
+                    } // Check the comment above
+                    resolve();
+                })
+    })
 }
 
 
@@ -84,7 +96,7 @@ function addId(book) {
 
 module.exports = {
     requestAndParse,
-    accessDatabase,
-    addId, 
-    authenticate
+    accessDatabase, 
+    authenticate,
+    addId
 }

@@ -1,5 +1,5 @@
-## Format for adding data in the /books/create route
----
+## Format for adding data to the /books/create route
+This is done in order to authenticate the user before the book is created.
 
 ```
 [

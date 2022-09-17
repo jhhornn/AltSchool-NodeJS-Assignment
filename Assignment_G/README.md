@@ -1,5 +1,6 @@
 ## Format for adding data to the /books/create route
-This is done in order to authenticate the user before the book is created.
+This is done in order to authenticate the user before the book is created. 
+Use a post request as well. 
 
 ```
 [

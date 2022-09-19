@@ -70,6 +70,8 @@ function authenticate(req, res) {
     })
 }
 
+function authorization(req, res, next) {}
+
 
 function addId(book) {
     if (book.length > 0) {

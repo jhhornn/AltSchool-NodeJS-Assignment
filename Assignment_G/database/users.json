@@ -2,7 +2,8 @@
 	{
 		"username": "John42",
 		"email": "john123@mail.com",
-		"password": "mypassword1"
+		"password": "mypassword1",
+		"role": "admin"
 	},
 	{
 		"username": "Yemi4life",

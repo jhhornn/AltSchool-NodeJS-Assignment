@@ -8,7 +8,8 @@ function deleteBook(req, res) {
     const books = requestAndParse(req, res);
     books
         .then((book) => {
-            const bookId = book.id;
+            // console.log(book);
+            const bookId = book[1].id;
             fs.readFile(bookLibrary, 'utf8', (err, data) => {
                 if (err) {
                     console.log(err);
@@ -34,6 +35,7 @@ function deleteBook(req, res) {
                         res.end(JSON.stringify({
                             message: 'Let me check myself.'
                         }));
+                        return
                     }
                     res.writeHead(200);
                     res.end(JSON.stringify({message: 'Deletion successfull'}));

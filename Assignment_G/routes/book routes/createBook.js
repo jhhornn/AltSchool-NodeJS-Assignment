@@ -13,7 +13,6 @@ function createBook(req, res) {
         .then((book) => {
             fs.readFile(bookLibrary, 'utf8', (err, data) => {
                 if (err) {
-                    console.log(err);
                     res.writeHead(400)
                     res.end("An error occurred while reading");
                 }
@@ -28,7 +27,6 @@ function createBook(req, res) {
 
                 fs.writeFile(bookLibrary, JSON.stringify(idedBooks), (err) => {
                     if (err) {
-                        console.log(err);
                         res.writeHead(500);
                         res.end(JSON.stringify({
                             message: 'Let me check myself.'

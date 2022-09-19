@@ -64,6 +64,7 @@ function authenticate(req, res) {
 
                     if (userFound.password !== loginDeet[0].password) {
                         reject('Invalid username or password');
+                        // return
                     } // Check the comment above
                     resolve();
                 })
@@ -77,17 +78,25 @@ function authorize(req, res, role) {
             .then( async (detail) => {
                 const users = await getAllUsers();
                 const userFound = users.find((user) => {
+                    // console.log('got here');
                     return user.username === detail[0].username && user.password === detail[0].password;
                 })
+                console.log(userFound);
 
                 if (!userFound) {
                     reject("Username or password incorrect")
+                    return;
                 }
+
+                 if (!role.includes(userFound.role)) {
+                    reject("You do not have the required role to access this resources")
+                    return
+                }
+
+                resolve()
+
             })
-            if (!role.includes(userFound.role)) {
-                reject("You do not have the required role to access this resources")
-            }
-            resolve()
+           
     }
 )}
 

@@ -1,7 +1,7 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
-const {authenticate, authorization} = require('./utilities.js')
+const {authenticate, authorize} = require('./utilities.js')
 
 
 const modulePath = path.join(__dirname, '/routes/book routes/')
@@ -33,7 +33,7 @@ function requestHandler(req, res){
             });  
     }
     else if (req_url === '/books/delete' && req_method === 'delete'){
-        authenticate(req, res)
+        authorize(req, res, ['admin'])
             .then((() => {
                 deleteBook(req, res);
             })()).catch((err) => {

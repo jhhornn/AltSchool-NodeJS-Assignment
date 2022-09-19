@@ -1,7 +1,7 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
-const {authenticate} = require('./utilities.js')
+const {authenticate, authorization} = require('./utilities.js')
 
 
 const modulePath = path.join(__dirname, '/routes/book routes/')
@@ -33,7 +33,14 @@ function requestHandler(req, res){
             });  
     }
     else if (req_url === '/books/delete' && req_method === 'delete'){
-        deleteBook(req,res)
+        authenticate(req, res)
+            .then((() => {
+                deleteBook(req, res);
+            })()).catch((err) => {
+                console.log(err);
+                res.writeHead(400);
+                res.end(JSON.stringify({message: err}));
+            });  
     }
     else if (req_url === '/books/loanout' && req_method === 'post'){
         loanOutBook(req,res)

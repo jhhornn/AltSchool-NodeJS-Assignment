@@ -70,7 +70,28 @@ function authenticate(req, res) {
     })
 }
 
-function authorization(req, res, next) {}
+function authorize(req, res, role) {
+    return new Promise(function(resolve, reject) {
+        const details = requestAndParse(req, res);
+        details
+            .then( async (detail) => {
+                const users = await getAllUsers();
+                const userFound = users.find((user) => {
+                    return user.username === detail[0].username && user.password === detail[0].password;
+                })
+
+                if (!userFound) {
+                    reject("Username or password incorrect")
+                }
+            })
+            if (!role.includes(userFound.role)) {
+                reject("You do not have the required role to access this resources")
+            }
+            resolve()
+    }
+)}
+
+
 
 
 function addId(book) {
@@ -100,5 +121,6 @@ module.exports = {
     requestAndParse,
     accessDatabase, 
     authenticate,
+    authorize,
     addId
 }
